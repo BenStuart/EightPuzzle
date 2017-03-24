@@ -8,6 +8,10 @@ public class Node {
 	private int pathCost;
 	private Node parent;
 	
+	public Node(){
+		
+	}
+	
 	public Node(GameState state, GameState.Action action, int pathCost, Node parent) {
 		super();
 		this.state = state;
@@ -53,8 +57,19 @@ public class Node {
 	}
 	
 	public Collection<Node> expand() {
-		// actions that are applicable from the current game state
-		System.out.println("applicable actions" + state.applicableActions());
-		return new ArrayList<Node>();
+		// actions that can be taken for the current game state
+		// for each new possible action create a corresponding node with a new state
+		
+		//Collection of all applicable actions from current game state
+		Collection<GameState.Action> collect = state.applicableActions();
+		
+		ArrayList<Node> toBeReturned = new ArrayList<>();
+		
+		for (GameState.Action act : collect ){
+			//new node with new state(once action is applied), the actual action i.e EAST,WEST..., cost of action (always one) and the parent node.
+			Node node = new Node(state.applyAction(act), act, 1, this.parent);
+			toBeReturned.add(node);
+		}
+		return toBeReturned;
 	}
 }
